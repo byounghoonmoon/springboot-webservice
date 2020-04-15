@@ -1,0 +1,58 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>게시 글 목록</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+
+</head>
+
+<body th:align="center">
+<h1>게시글 목록</h1>
+<hr>
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+<tr>
+	<th bgcolor="orange" width="100">번호</th>
+	<th bgcolor="orange" width="200">제목</th>
+	<th bgcolor="orange" width="150">작성자</th>
+	<th bgcolor="orange" width="150">등록일</th>
+	<th bgcolor="orange" width="100">조회수</th>
+</tr>
+ 
+<tr th:each="board, state : ${boardList}">
+	<td th:text="${board.seq}">
+	<td><a th:href="@{/getBoard(seq=${board.seq})}" th:text="${board.title}"></a></td>
+	<td th:text="${board.writer}">
+	<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd')}"></td>
+	<td th:text="${board.cnt}">
+</tr>
+
+</table>
+
+
+    <nav aria-label="Page navigation" style="text-align:center;">
+        <ul class="pagination" 
+        	th:with="startNumber=${pageInfo.startPage},
+        			  endNumber=${pageInfo.endPage}">
+            <li><a th:href="@{/getBoardList(currentPage=${pageInfo.firstPage})}"> 처음</a></li>
+            <li><a th:href="@{/getBoardList(currentPage=${pageInfo.firstPage})}"> 이전</a></li>
+
+            <li th:each="page :${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}" th:class="(${page} == ${pageInfo.currentPage}) ? 'active'">
+                <a th:href="@{/getBoardList(currentPage=${page})}" th:text="${page}"><span class="sr-only"></span></a>
+            </li>
+
+<!--             <li><a aria-label="Next" th:href="@{/getBoardList(page=${boardList.totalP} +1)}">&raquo;</a></li> -->
+
+            <li><a th:href="@{/getBoardList(currentPage=${pageInfo.firstPage})}"> 다음</a></li>
+			<li><a th:href="@{/getBoardList(currentPage=${pageInfo.lastPage})}">마지막</a></li>
+        </ul>
+    </nav>
+<br>
+<a th:href="@{/insertBoard}">새글 등록 </a>
+</body>
+</html>

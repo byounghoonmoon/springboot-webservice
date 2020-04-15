@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+       Copyright 2015-2016 the original author or authors.
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.passion.mapper.BoardMapper">
+     <select id="selectBoardAll" parameterType="PageInfo" resultType="Board">
+        select * from Board 
+    </select>
+    
+    <select id="selectBoardList"  parameterType="PageInfo" resultType="Board">
+    	select * from (
+		select rownum as num , a.* from (
+		 select  * from board ) a
+		)
+		where num between ( (#{ currentPage}-1) * #{pagePerCnt} +1 ) and  (#{currentPage}*#{pagePerCnt})
+    
+    </select>
+    
+    <select id="selectBoardById" resultType="Board">
+        select * from Board where seq = #{seq}
+    </select>
+    
+     <select id="selectBoardMaxSeq" resultType="long">
+        select max(seq)+1 as seq from Board 
+    </select>
+    
+    <insert	id="insertBoard" parameterType="Board">
+    	insert into Board 
+    	values(#{seq}, #{cnt}, #{content} ,sysdate, #{title}, #{writer});
+    </insert>
+    
+     <select id="selectBoardCount" resultType="int">
+        select count(*) from Board 
+    </select>
+</mapper>
