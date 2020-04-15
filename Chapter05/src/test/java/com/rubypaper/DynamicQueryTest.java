@@ -23,7 +23,7 @@ public class DynamicQueryTest {
 	@Test
 	public void testDynamicQuery() {
 		String searchCondition = "CONTENT";
-		String searchKeyword = "테스트 내용10";
+		String searchKeyword = "테스트 내용";
 
 		
 		BooleanBuilder builder = new BooleanBuilder();
