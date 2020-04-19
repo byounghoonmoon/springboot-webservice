@@ -15,6 +15,14 @@
 <body th:align="center">
 <h1>게시글 목록</h1>
 <hr>
+
+<select id="pagePerCnt" name="pagePerCnt">
+	<option th:each="num :${#numbers.sequence(1, 4)}" 
+			th:value=${num}*5 th:text=${num}*5
+	></option>
+</select>
+<p th:text="${pageInfo.pagePerCnt}"></p>
+
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
 <tr>
 	<th bgcolor="orange" width="100">번호</th>
@@ -36,19 +44,24 @@
 
 
     <nav aria-label="Page navigation" style="text-align:center;">
-        <ul class="pagination" 
-        	th:with="startNumber=${pageInfo.startPage},
-        			  endNumber=${pageInfo.endPage}">
+        <ul class="pagination" >
+<!--         	th:with="startNumber=${document.getElementById('pagePerCnt').value}, -->
+<!--         			  endNumber=${pageInfo.endPage}"> -->
             <li><a th:href="@{/getBoardList(currentPage=${pageInfo.firstPage})}"> 처음</a></li>
-            <li><a th:href="@{/getBoardList(currentPage=${pageInfo.firstPage})}"> 이전</a></li>
-
+            <li>
+            	<a th:if="${pageInfo.currentPage} == ${pageInfo.firstPage}"> 이전</a>
+            	<a th:unless="${pageInfo.currentPage} == ${pageInfo.firstPage}" th:href="@{/getBoardList(currentPage=${pageInfo.currentPage}-1)}"> 이전</a>
+            </li>
+            
             <li th:each="page :${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}" th:class="(${page} == ${pageInfo.currentPage}) ? 'active'">
                 <a th:href="@{/getBoardList(currentPage=${page})}" th:text="${page}"><span class="sr-only"></span></a>
             </li>
-
-<!--             <li><a aria-label="Next" th:href="@{/getBoardList(page=${boardList.totalP} +1)}">&raquo;</a></li> -->
-
-            <li><a th:href="@{/getBoardList(currentPage=${pageInfo.firstPage})}"> 다음</a></li>
+            
+            <li>
+            	<a th:if="${pageInfo.currentPage} == ${pageInfo.lastPage}"> 다음</a>
+            	<a th:unless="${pageInfo.currentPage} == ${pageInfo.lastPage}" th:href="@{/getBoardList(currentPage=${pageInfo.currentPage}+1)}"> 다음</a>
+            </li>
+            
 			<li><a th:href="@{/getBoardList(currentPage=${pageInfo.lastPage})}">마지막</a></li>
         </ul>
     </nav>
