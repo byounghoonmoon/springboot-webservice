@@ -35,19 +35,24 @@ public class BoardController {
 
 	@RequestMapping("/getBoardList")
 	public String getBoardList(Model model, PageInfo pageInfo) {
+		
 
 		System.out.println(pageInfo.toString());
 		int totCnt = boardService.getBoardCount();
-		int lstPage = ( totCnt/pageInfo.getPagePerCnt() )  +  1;
 		pageInfo.setTotCnt(totCnt);
-		pageInfo.setLastPage(lstPage);
-		pageInfo.setEndPage(lstPage);
 		
-		System.out.println(" ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ");
-		System.out.println(pageInfo.toString());
+		// page navigation setting
+		pageInfo.calcNav(pageInfo);
+		
+		
+//		pageInfo.setEndPage(lstPage);
+		
 		List<Board> boardList = boardService.getBoardList(pageInfo);
-		
 		model.addAttribute("boardList", boardList);
+		
+
+		System.out.println(pageInfo.toString());		
+		
 		return "getBoardList";
 	}
 

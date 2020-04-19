@@ -39,10 +39,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<Board> getBoardList(PageInfo pageInfo) {
 	
-		System.out.println(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■ Page Info");
-		System.out.println(pageInfo.toString());
-		System.out.println(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■ Page Info");
-		
 		return boardMapper.selectBoardList(pageInfo);
 	}
 
